@@ -37,18 +37,17 @@ module.exports = {
     if (req.method.toUpperCase() !== 'POST') {
       return next();
     }
-
+    console.log(req.get('X-Webhook-Name'));
     if ('ticket.updated' === req.get('X-Webhook-Name')) {
-      Ticket.findOne({reference: req.params.reference}).then(function(ticket) {
-        extend(ticket, req.params);
+      Ticket.findOne({reference: req.body.reference}).then(function(ticket) {
+        extend(ticket, req.body);
         res.status(200);
         return ticket.save();
       }).then(function() {
         next();
       }, next);
     } else {
-      //Ticket.create(req.body).then(function() {
-      Ticket.create({email: req.param('email'), reference: req.param('reference')}).then(function() {
+      Ticket.create(req.body).then(function() {
         mailOptions.to = req.param('email');
         res.status(201);
         smtpTransport.sendMail(mailOptions, next);
