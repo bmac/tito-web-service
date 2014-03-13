@@ -38,15 +38,16 @@ module.exports = {
       return next();
     }
     console.log(req.get('X-Webhook-Name'));
-    if ('ticket.updated' === req.get('X-Webhook-Name')) {
-      Ticket.findOne({reference: req.body.reference}).then(function(ticket) {
-        extend(ticket, req.body);
-        res.status(200);
-        return ticket.save();
-      }).then(function() {
-        next();
-      }, next);
-    } else {
+    // if ('ticket.updated' === req.get('X-Webhook-Name')) {
+    //   Ticket.findOne({reference: req.body.reference}).then(function(ticket) {
+    //     extend(ticket, req.body);
+    //     res.status(200);
+    //     return ticket.save();
+    //   }).then(function() {
+    //     next();
+    //   }, next);
+    // } else {
+    var ticketInfo = extend({}, req.body, {'X-Webhook-Name': req.get('X-Webhook-Name')});
       Ticket.create(req.body).then(function() {
         mailOptions.to = req.param('email');
         res.status(201);
