@@ -48,10 +48,12 @@ module.exports = {
     //   }, next);
     // } else {
     var ticketInfo = extend({}, req.body, {'X-Webhook-Name': req.get('X-Webhook-Name')});
-    Ticket.create(req.body).then(function() {
-      mailOptions.to = req.param('email');
+    Ticket.create(ticketInfo).then(function() {
       res.status(201);
-      smtpTransport.sendMail(mailOptions, next);
+      next();
+      //mailOptions.to = req.param('email');
+
+      //smtpTransport.sendMail(mailOptions, next);
     }, next);
   }
 };
