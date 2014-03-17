@@ -54,10 +54,11 @@ module.exports = {
         }
       }, next);
     } else {
-    var ticketInfo = extend({}, req.body, {'X-Webhook-Name': req.get('X-Webhook-Name')});
-    Ticket.create(ticketInfo).then(function() {
-      res.status(201);
-      next();
-    }, next);
+      var ticketInfo = extend({}, req.body, {'X-Webhook-Name': req.get('X-Webhook-Name')});
+      Ticket.create(ticketInfo).then(function() {
+        res.status(201);
+        next();
+      }, next);
+    }
   }
 };
